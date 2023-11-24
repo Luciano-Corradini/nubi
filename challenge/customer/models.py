@@ -34,4 +34,3 @@ class Customer(models.Model):
     birth_date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     user = OneToOneField('customer.CustomerUser', on_delete=models.CASCADE, related_name='customer')
-

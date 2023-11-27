@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -23,6 +24,7 @@ class Login(ObtainAuthToken):
             status=status.HTTP_200_OK
         )
 
+
 class Register(APIView):
     serializer_class = RegisterSerializer
 
@@ -32,3 +34,12 @@ class Register(APIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class Logout(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        request.user.auth_token.delete()
+
+        return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)

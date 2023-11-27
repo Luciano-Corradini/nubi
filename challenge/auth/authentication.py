@@ -16,11 +16,12 @@ class TokenHandler:
         time_elapsed = timezone.now() - token.created
         left_time = timedelta(days = settings.TOKEN_EXPIRATION) - time_elapsed
         is_expired = left_time < timedelta(seconds = 0)
-        if is_expired:
+
+        if is_expired and is_login:
             token.delete()
-            if is_login:
-                token = Token.objects.create(user = token.user)
-                return False, token
+            token = Token.objects.create(user = token.user)
+            return False, token
+
         return is_expired, token
 
 

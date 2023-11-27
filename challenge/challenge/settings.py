@@ -137,4 +137,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Expiration in days
-TOKEN_EXPIRATION = 30
+TOKEN_EXPIRATION = int(os.environ.get('TOKEN_EXPIRATION', 30))

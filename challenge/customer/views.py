@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from customer.models import Customer
 from customer.serializers import CustomerSerializer
 from customer.pagination import CustomerListPagination
@@ -8,6 +9,7 @@ from customer.pagination import CustomerListPagination
 class CustomerRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_serializer(self, *args, **kwargs):
         kwargs['partial'] = True
@@ -17,6 +19,7 @@ class CustomerListCreateView(ListCreateAPIView):
     pagination_class = CustomerListPagination
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
 
     filter_backends = [OrderingFilter, DjangoFilterBackend]
     ordering_fields = '__all__'

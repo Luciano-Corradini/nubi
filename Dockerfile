@@ -4,10 +4,10 @@ RUN wget -O /usr/local/bin/wait-for-it.sh \
     https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && \
     chmod +x /usr/local/bin/wait-for-it.sh
 
-RUN mkdir /app
 WORKDIR /app
 
-COPY . .
+COPY ./challenge /app
+COPY .env /app
 
 RUN python -m venv /venv
 ENV PATH="/venv/bin:$PATH"

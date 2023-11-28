@@ -22,17 +22,12 @@ class CustomerListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     filter_backends = [OrderingFilter, DjangoFilterBackend]
-    ordering_fields = '__all__'
+    ordering_fields = ['wallet_id', 'dni', 'user__email']
     ordering = ['created_at']
     filterset_fields = {
-        "wallet_id": ['exact'],
-        "sex_tape": ['exact'],
-        "dni": ['exact'],
-        "birth_date": ['exact', 'gte', 'lte'],
-        "created_at": ['exact', 'gte', 'lte'],
+        'wallet_id': ['exact'],
+        'dni': ['exact'],
         'user__email': ['exact'],
-        'user__name': ['exact'],
-        'user__last_name': ['exact'],
     }
 
     def get_serializer(self, *args, **kwargs):

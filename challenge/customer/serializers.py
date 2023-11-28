@@ -34,10 +34,12 @@ class CustomerUserSerializer(serializers.ModelSerializer):
 
         if request.method == 'PUT':
             email = data.get('email')
-            qs = models.CustomerUser.objects.filter(email=email)
+            current_user = self.context.get('instance')
 
-            if email and qs.exists():
-                raise serializers.ValidationError({'user': {'email': 'user with this dni already exists.'}})
+            if email and current_user:
+                qs = models.CustomerUser.objects.exclude(pk=current_user.pk).filter(email=email)
+                if qs.exists():
+                    raise serializers.ValidationError({'user': {'email': 'User with this email already exists.'}})
 
         return data
 
@@ -59,10 +61,10 @@ class CustomerSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         user_data = validated_data.pop('user', {})
         user = instance.user
-
-        for key, value in user_data.items():
-            setattr(user, key, value)
-        user.save(update_fields=user_data.keys())
+        
+        user_serializer = CustomerUserSerializer(instance=user, data=user_data, context={'request': self.context['request'], 'instance': user})
+        user_serializer.is_valid(raise_exception=True)
+        user_serializer.save()
 
         for key, value in validated_data.items():
             setattr(instance, key, value)

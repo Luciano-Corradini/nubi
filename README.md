@@ -66,5 +66,5 @@ To create migrations or new apps using Django's commands, follow these steps:
 ## Testing
 Ensure Docker is running:
 ```bash
-docker exec -it challenge_web_1 python manage.py test
+docker exec -it nubi_web_1 python manage.py test
 ```
